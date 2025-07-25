@@ -25,7 +25,7 @@ Urdu-Audio-Transcription-Microservice/
 
 ### 1. Clone the Repository
 ```
-git clone https://github.com/abdullah-rehman1/Urdu-Audio-Transcription-Microservice.gi
+git clone https://github.com/abdullah-rehman1/Urdu-Audio-Transcription-Microservice.git
 cd Urdu-Audio-Transcription-Microservice
 ```
 
