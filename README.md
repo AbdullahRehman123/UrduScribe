@@ -2,7 +2,7 @@
 A Python-based microservice that transcribes Urdu audio files (`.wav` or `.mp3`) using a **locally fine-tuned ASR model**. Supports batch processing, chunked transcription for long audios, and daily rotated logs.
 
 ## 📂 Project Structure
-asr-microservice/  
+Urdu-Audio-Transcription-Microservice/  
 ├── app/  
 │ ├── config.py  
 │ ├── audio_loader.py  
@@ -25,18 +25,20 @@ asr-microservice/
 
 ### 1. Clone the Repository
 ```
-git clone https://github.com/abdullah-rehman1/Urdu-Audio-Transcription-Microservice
-cd audio_transcriber_microservice
+git clone https://github.com/abdullah-rehman1/Urdu-Audio-Transcription-Microservice.gi
+cd Urdu-Audio-Transcription-Microservice
 ```
 
 ### 2. Clone the Fine-Tuned Urdu ASR Model
 ```
+cd models
 git lfs install
 git clone https://huggingface.co/sajadkawa/ns_finetune_urdu_asr_org
 ```
 
 ### 3. Create Virtual Environment & Install Dependencies
 ```
+cd ..
 python -m venv env
 # On Linux/macOS
 source env/bin/activate
