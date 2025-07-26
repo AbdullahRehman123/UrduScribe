@@ -1,0 +1,28 @@
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+
+# Virtual environment folder
+env/
+
+# Environment configuration file
+.env
+
+# Ignore all contents in models but keep the folder
+models/*
+!models/.gitkeep
+
+# Ignore all contents in transcriptions but keep the folder
+transcriptions/*
+!transcriptions/.gitkeep
+
+# Ignore all contents in audios but keep the folder
+audios/*
+!audios/.gitkeep
+
+# Ignore all contents in logs but keep the folder
+logs/*
+!logs/.gitkeep
