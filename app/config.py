@@ -2,21 +2,31 @@ import os
 from pathlib import Path
 from logging.handlers import TimedRotatingFileHandler
 import logging
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 import torch
 
 # Load environment variables from .env (if present)
-load_dotenv()
+#load_dotenv()
 
 # ─── PATHS ──────────────────────────────────────────────────────────────────────
-# Folder where incoming .wav/.mp3 files live
-INPUT_FOLDER = Path(os.getenv("INPUT_FOLDER", "audios"))
+
+# Folder where incoming urdu .wav/.mp3 files live
+URDU_INPUT_FOLDER = Path(os.getenv("URDU_INPUT_FOLDER", "urdu_audios"))
+
+# Folder where incoming english .wav/.mp3 files live
+ENGLISH_INPUT_FOLDER = Path(os.getenv("ENGLISH_INPUT_FOLDER", "english_audios"))
 
 # Folder where .txt transcripts will be written
 OUTPUT_FOLDER = Path(os.getenv("OUTPUT_FOLDER", "transcriptions"))
 
-# Local Hugging Face model directory
-MODEL_PATH = Path(os.getenv("MODEL_PATH", "./models/ns_finetune_urdu_asr_org"))
+# Local WHISPER BASE Hugging Face model directory
+ENGLISH_MODEL_PATH = Path(os.getenv("ENGLISH_MODEL_PATH", "./models/whisper-base"))
+
+# Local URDU ASR Hugging Face model directory
+URDU_MODEL_PATH = Path(os.getenv("MODEL_PATH", "./models/ns_finetune_urdu_asr_org"))
+
+# Local DIARIZATION Hugging Face model directory
+DIARIZATION_MODEL_CONFIG_PATH = Path(os.getenv("DIARIZATION_MODEL_CONFIG_PATH", "./models/speaker-diarization-3.1/pyannote_diarization_config.yaml"))
 
 # Log file (rotated daily)
 LOG_FILE = Path(os.getenv("LOG_FILE", "logs/transcriber.log"))
