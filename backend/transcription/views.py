@@ -37,6 +37,11 @@ class TranscriptionView(LoginRequiredMixin, View):
             upload_path = os.path.join(settings.MEDIA_ROOT, 'uploads', audio_file.name)
             os.makedirs(os.path.dirname(upload_path), exist_ok=True)
 
+            # ACTUALLY SAVE THE FILE
+            with open(upload_path, 'wb+') as destination:
+                for chunk in audio_file.chunks():
+                    destination.write(chunk)
+
             # Call your transcription function
             from app.transcribe import transcribe  # Your existing function
             transcription_text = transcribe(upload_path, language)

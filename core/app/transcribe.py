@@ -4,6 +4,7 @@ import time
 from app.config import ENGLISH_INPUT_FOLDER, URDU_INPUT_FOLDER, OUTPUT_FOLDER, get_rotating_logger
 from app.audio_loader import load_audio_files, load_and_preprocess_audio
 from app.diarization import diarize_audio
+from app.transcription_urdu import transcribe_chunks
 
 # Initialize logger
 logger = get_rotating_logger("main")
@@ -27,18 +28,22 @@ def save_transcription(text: str, original_filename: str):
 
 def transcribe(upload_path, language):
 
-    # Import based on language
-    if language == 'urdu' or language == 'Urdu':
-        from transcription_urdu import transcribe_chunks
-    else:
-        from transcription_english import transcribe_chunks
+    # Convert string to Path object
+    upload_path = Path(upload_path)
 
+    # Import based on language
+    '''if language == 'urdu' or language == 'Urdu':
+        from app.transcription_urdu import transcribe_chunks
+    else:
+        from app.transcription_english import transcribe_chunks
+    '''
     logger.info("Starting Audio Transcription Microservice")
 
     # Load audio files
     #audio_files = load_audio_files(ENGLISH_INPUT_FOLDER)
 
-    audio_file = load_audio_files(upload_path)
+
+    audio_file = upload_path
 
     '''if not audio_files:
         logger.info("No audio files found in input folder.")
@@ -68,15 +73,26 @@ def transcribe(upload_path, language):
 
         logger.info(f"Transcription started for each speaker segment.")
         # Segment audio by speaker
-        for speaker, start, end in speaker_segments:
+        #for speaker, start, end in speaker_segments:
+        for idx, (speaker, start, end) in enumerate(speaker_segments):
+            logger.info(f"Processing segment {idx+1}/{len(speaker_segments)} - {speaker}")
+
             s, e = int(start * sr), int(end * sr)
             seg_audio = audio_np[s:e]
 
             if len(seg_audio) < min_len:
+                logger.info(f"Segment {idx+1} skipped - too short")
                 continue
-
-            # Transcribe audio segment
-            text = transcribe_chunks([seg_audio], sampling_rate=sr)
+            
+            try:
+                # Transcribe audio segment
+                logger.info(f"Transcribing segment {idx+1}...")
+                text = transcribe_chunks([seg_audio], sampling_rate=sr)
+                logger.info(f"Segment {idx+1} transcribed: {text[:50]}...")
+            
+            except Exception as e:
+                logger.error(f"Error in segment {idx+1}: {str(e)}")
+                raise
 
             if text.strip():
                 lines.append(f"{speaker}: {text.strip()}")
@@ -88,6 +104,8 @@ def transcribe(upload_path, language):
         duration = time.time() - start_time
         logger.info(f"File processed: {audio_file.name} | Duration: {duration:.2f}s | Output: {output_file_path.name} | Status: SUCCESS")
 
+        return "\n".join(lines) # ADD THIS LINE
+    
     except Exception as e:
         duration = time.time() - start_time
         logger.error(f"File processed: {audio_file.name} | Duration: {duration:.2f}s | Status: FAILED | Error: {str(e)}")

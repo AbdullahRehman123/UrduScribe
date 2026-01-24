@@ -5,6 +5,10 @@ from typing import List
 from app.config import URDU_MODEL_PATH, DEVICE
 import warnings
 from transformers.utils import logging as transformers_logging
+from app.config import get_rotating_logger
+
+# Initialize logger
+logger = get_rotating_logger("main")
 
 # Suppress transformers warnings for clean logs
 warnings.filterwarnings("ignore")
@@ -46,5 +50,8 @@ def transcribe_chunks(audio_chunks: List[np.ndarray], sampling_rate: int = 16000
         full_transcription.append(transcription)
 
     # Combine all chunk transcriptions into one final text
+
+    logger.info(f"Chunks transcribed successfully")
+
     return ' '.join(full_transcription)
     

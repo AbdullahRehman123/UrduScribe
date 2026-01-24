@@ -27,4 +27,6 @@ def load_pipeline_from_pretrained(path_to_config: str | Path) -> Pipeline:
     #print(f"Changing working directory back to {cwd}")
     os.chdir(cwd)
 
+    logger.info(f"Loaded pyannote pipeline and returning")
+    
     return pipeline
