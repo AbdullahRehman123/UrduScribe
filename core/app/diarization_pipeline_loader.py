@@ -1,7 +1,7 @@
 from pathlib import Path
 from pyannote.audio import Pipeline
 import os
-from config import get_rotating_logger
+from app.config import get_rotating_logger
 
 logger = get_rotating_logger("Diarization Pipeline Loader")
 

@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import List, Tuple
 import librosa
 import numpy as np
-from config import URDU_INPUT_FOLDER,ENGLISH_INPUT_FOLDER, CHUNK_LENGTH_SECONDS
+from app.config import URDU_INPUT_FOLDER,ENGLISH_INPUT_FOLDER, CHUNK_LENGTH_SECONDS
 
 def load_audio_files(input_dir: Path = ENGLISH_INPUT_FOLDER) -> List[Path]:
     """

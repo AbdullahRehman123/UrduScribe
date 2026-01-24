@@ -1,8 +1,8 @@
-# Urdu-Audio-Transcription-Microservice
+# UrduScribe
 A Python-based microservice that transcribes Urdu audio files (`.wav` or `.mp3`) using a **locally fine-tuned ASR model**. Supports batch processing, chunked transcription for long audios, and daily rotated logs.
 
 ## 📂 Project Structure
-Urdu-Audio-Transcription-Microservice/  
+UrduScribe/  
 ├── app/  
 │ ├── config.py  
 │ ├── audio_loader.py  

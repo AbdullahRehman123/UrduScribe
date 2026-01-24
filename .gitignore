@@ -7,6 +7,17 @@ __pycache__/
 
 # Virtual environment folder
 venv3.10/
+env/
+venvfresh/
+
+# uploads folder
+uploads/
+
+# migrations folder
+migrations/
+
+# .vscode folder
+.vscode/
 
 # Environment configuration file
 .env
