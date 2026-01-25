@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Processing...</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Add Urdu Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+
+        .urdu-text {
+            font-family: 'Noto Nastaliq Urdu', serif;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5 text-center">
+        <h2>Processing Your Audio...</h2>
+        <div class="spinner"></div>
+        <p id="status">Transcribing audio, please wait...</p>
+        <div id="result" style="display:none;" class="mt-4">
+            <h3>Transcription Result:</h3>
+            <pre id="transcription-text" class="text-left bg-light p-3 {% if language == 'urdu' %}urdu-text{% endif %}"></pre>
+        </div>
+    </div>
+
+    <script>
+        const taskId = "{{ task_id }}";
+        
+        function checkStatus() {
+            fetch(`/task-status/${taskId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.state === 'SUCCESS') {
+                        document.getElementById('status').innerHTML = '<span class="text-success">✓ Completed!</span>';
+                        document.getElementById('transcription-text').textContent = data.result;
+                        document.getElementById('result').style.display = 'block';
+                        document.querySelector('.spinner').style.display = 'none';
+                    } else if (data.state === 'FAILURE') {
+                        document.getElementById('status').innerHTML = '<span class="text-danger">✗ Failed: ' + data.status + '</span>';
+                        document.querySelector('.spinner').style.display = 'none';
+                    } else {
+                        setTimeout(checkStatus, 2000); // Check again in 2 seconds
+                    }
+                });
+        }
+        
+        // Start checking status
+        checkStatus();
+    </script>
+</body>
+</html>

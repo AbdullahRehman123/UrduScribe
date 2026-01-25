@@ -6,6 +6,9 @@ from urllib.parse import urlencode
 from django.views.generic import TemplateView
 import os
 from django.conf import settings
+from .tasks import transcribe_audio_task
+from celery.result import AsyncResult
+from django.http import JsonResponse
 #from autos.models import Make,Auto
 
 
@@ -30,6 +33,7 @@ class TranscriptionView(LoginRequiredMixin, View):
     def post(self, request):
         audio_file = request.FILES.get('audio_file')
         language = request.POST.get('language')
+        num_speakers = request.POST.get('num_speakers', 1)
 
         if audio_file:
 
@@ -42,18 +46,35 @@ class TranscriptionView(LoginRequiredMixin, View):
                 for chunk in audio_file.chunks():
                     destination.write(chunk)
 
-            # Call your transcription function
-            from app.transcribe import transcribe  # Your existing function
-            transcription_text = transcribe(upload_path, language)
+            # Send task to Celery (non-blocking)
+            task = transcribe_audio_task.delay(upload_path, language, num_speakers)
 
-            params = urlencode({
-                'filename': audio_file.name,
-                'filesize': audio_file.size,
-                'language': language,
-                'transcription': transcription_text
-            })
-
-            #return render(request, 'transcription/success.html')
-            return redirect(f"{reverse_lazy('transcription:success')}?{params}")
+            # Redirect to processing page with task ID
+            return redirect(f"{reverse_lazy('transcription:processing', kwargs={'task_id': task.id})}?language={language}")
         
         return render(request, 'transcription/upload.html', {'error': 'No file uploaded'})
+    
+
+class ProcessingView(LoginRequiredMixin, View):
+    def get(self, request, task_id):
+        language = request.GET.get('language', 'english')  # Get from URL
+        context = {'task_id': task_id, 'language': language}
+        return render(request, 'transcription/processing.html', context)
+    
+class TaskStatusView(LoginRequiredMixin, View):
+    def get(self, request, task_id):
+        task = AsyncResult(task_id)
+        
+        if task.state == 'PENDING':
+            response = {'state': task.state, 'status': 'Processing...'}
+        elif task.state == 'SUCCESS':
+            response = {
+                'state': task.state,
+                'result': task.result
+            }
+        elif task.state == 'FAILURE':
+            response = {'state': task.state, 'status': str(task.info)}
+        else:
+            response = {'state': task.state}
+        
+        return JsonResponse(response)
