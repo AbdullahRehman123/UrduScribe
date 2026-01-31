@@ -1,0 +1,250 @@
+{% extends "base_menu.html" %}
+
+{% block content %}
+<style>
+    body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+    }
+    
+    .blog-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 60px 20px;
+    }
+    
+    .blog-header {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+    
+    .blog-title {
+        font-size: 3rem;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 15px;
+    }
+    
+    .blog-subtitle {
+        font-size: 1.2rem;
+        color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .blog-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 30px;
+        margin-bottom: 40px;
+    }
+    
+    @media (max-width: 768px) {
+        .blog-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    .blog-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        transition: all 0.3s;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .blog-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    }
+    
+    .blog-image {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+    }
+    
+    .blog-content {
+        padding: 25px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .blog-card-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 12px;
+        line-height: 1.4;
+    }
+    
+    .blog-date {
+        font-size: 0.85rem;
+        color: #667eea;
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+    
+    .blog-desc {
+        font-size: 0.95rem;
+        color: #666;
+        line-height: 1.6;
+        flex: 1;
+    }
+    
+    .read-more {
+        display: inline-block;
+        margin-top: 15px;
+        color: #667eea;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+    
+    .read-more:hover {
+        color: #764ba2;
+        transform: translateX(5px);
+    }
+    
+    .back-btn {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 12px 30px;
+        background: white;
+        color: #667eea;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+    
+    .back-btn:hover {
+        background: #f8f9fa;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+</style>
+
+<div class="blog-container">
+    <div class="blog-header">
+        <h1 class="blog-title">UrduScribe Blog</h1>
+        <p class="blog-subtitle">Learn more about using UrduScribe to transcribe your audio files.</p>
+    </div>
+    
+    <div class="blog-grid">
+        <div class="blog-card">
+            <img src="https://picsum.photos/400/220?1" alt="Blog post" class="blog-image">
+            <div class="blog-content">
+                <h2 class="blog-card-title">Getting Started with UrduScribe</h2>
+                <div class="blog-date">January 30, 2026</div>
+                <div class="blog-desc">
+                    A guide to transcribing your first file with UrduScribe, including features like language selection, speaker recognition, and downloading transcripts.
+                </div>
+                <a href="#" class="read-more">Read more →</a>
+            </div>
+        </div>
+
+        <div class="blog-card">
+            <img src="https://picsum.photos/400/220?2" alt="Blog post" class="blog-image">
+            <div class="blog-content">
+                <h2 class="blog-card-title">Security and Privacy: Frequently Asked Questions</h2>
+                <div class="blog-date">March 19, 2025</div>
+                <div class="blog-desc">
+                    Learn more about data privacy and security with UrduScribe. Your files are encrypted and secure.
+                </div>
+                <a href="#" class="read-more">Read more →</a>
+            </div>
+        </div>
+
+        <div class="blog-card">
+            <img src="https://picsum.photos/400/220?3" alt="Blog post" class="blog-image">
+            <div class="blog-content">
+                <h2 class="blog-card-title">UrduScribe for Teams and Organizations</h2>
+                <div class="blog-date">June 29, 2024</div>
+                <div class="blog-desc">
+                    Simplified billing and unlimited transcription for multiple users. Perfect for businesses and teams.
+                </div>
+                <a href="#" class="read-more">Read more →</a>
+            </div>
+        </div>
+
+        <div class="blog-card">
+            <img src="https://picsum.photos/400/220?4" alt="Blog post" class="blog-image">
+            <div class="blog-content">
+                <h2 class="blog-card-title">UrduScribe GPT: Transcribe and Chat with Audio</h2>
+                <div class="blog-date">May 20, 2024</div>
+                <div class="blog-desc">
+                    We're excited to roll out the UrduScribe GPT to all users! Seamlessly summarize and chat with your transcripts.
+                </div>
+                <a href="#" class="read-more">Read more →</a>
+            </div>
+        </div>
+
+        <div class="blog-card">
+            <img src="https://picsum.photos/400/220?5" alt="Blog post" class="blog-image">
+            <div class="blog-content">
+                <h2 class="blog-card-title">Export Transcripts and Manage Files in Bulk</h2>
+                <div class="blog-date">September 14, 2023</div>
+                <div class="blog-desc">
+                    Export transcripts and manage multiple files at the same time. Learn about UrduScribe's bulk management tools.
+                </div>
+                <a href="#" class="read-more">Read more →</a>
+            </div>
+        </div>
+
+        <div class="blog-card">
+            <img src="https://picsum.photos/400/220?6" alt="Blog post" class="blog-image">
+            <div class="blog-content">
+                <h2 class="blog-card-title">UrduScribe Unlimited, Explained</h2>
+                <div class="blog-date">September 8, 2023</div>
+                <div class="blog-desc">
+                    What's included? A deep dive into unlimited transcription features and pricing plans.
+                </div>
+                <a href="#" class="read-more">Read more →</a>
+            </div>
+        </div>
+
+        <div class="blog-card">
+            <img src="https://picsum.photos/400/220?7" alt="Blog post" class="blog-image">
+            <div class="blog-content">
+                <h2 class="blog-card-title">Free Tier Just Got Bigger!</h2>
+                <div class="blog-date">September 6, 2023</div>
+                <div class="blog-desc">
+                    UrduScribe's free tier now includes advanced features, powered by the latest AI models.
+                </div>
+                <a href="#" class="read-more">Read more →</a>
+            </div>
+        </div>
+
+        <div class="blog-card">
+            <img src="https://picsum.photos/400/220?8" alt="Blog post" class="blog-image">
+            <div class="blog-content">
+                <h2 class="blog-card-title">Transcription Modes Explained</h2>
+                <div class="blog-date">August 24, 2023</div>
+                <div class="blog-desc">
+                    An in-depth overview of UrduScribe's transcription modes and how to choose the best one for your needs.
+                </div>
+                <a href="#" class="read-more">Read more →</a>
+            </div>
+        </div>
+
+        <div class="blog-card">
+            <img src="https://picsum.photos/400/220?9" alt="Blog post" class="blog-image">
+            <div class="blog-content">
+                <h2 class="blog-card-title">Tips for Better Transcription Accuracy</h2>
+                <div class="blog-date">July 15, 2023</div>
+                <div class="blog-desc">
+                    Learn best practices for recording audio to get the most accurate transcriptions from UrduScribe.
+                </div>
+                <a href="#" class="read-more">Read more →</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="text-center">
+        <a href="{% url 'transcription:all' %}" class="back-btn">← Back to Home</a>
+    </div>
+</div>
+{% endblock %}

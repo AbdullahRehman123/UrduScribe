@@ -1,31 +1,141 @@
 {% extends 'base_bootstrap.html' %}
-{% load app_tags %} <!-- see home/templatetags/app_tags.py and dj4e-samples/settings.py -->
+{% load app_tags %}
+
 {% block navbar %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<style>
+    .custom-navbar {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        padding: 15px 0;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .navbar-brand {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: white !important;
+        letter-spacing: 0.5px;
+        transition: all 0.3s;
+    }
+    
+    .navbar-brand:hover {
+        transform: scale(1.05);
+        color: #f8f9fa !important;
+    }
+    
+    .nav-link {
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 600;
+        padding: 8px 16px !important;
+        margin: 0 5px;
+        border-radius: 8px;
+        transition: all 0.3s;
+    }
+    
+    .nav-link:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+    }
+    
+    .dropdown-toggle::after {
+        margin-left: 8px;
+    }
+    
+    .dropdown-menu {
+        border-radius: 10px;
+        border: none;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        margin-top: 10px;
+    }
+    
+    .dropdown-item {
+        padding: 10px 20px;
+        transition: all 0.3s;
+    }
+    
+    .dropdown-item:hover {
+        background: #667eea;
+        color: white;
+    }
+    
+    .user-avatar {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: 2px solid white;
+        vertical-align: middle;
+        margin-right: 5px;
+    }
+    
+    .navbar-toggler {
+        border-color: rgba(255, 255, 255, 0.5);
+    }
+    
+    .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+    
+    .menu-login-btn {
+        background:  #667eea;
+        font-weight: 700;
+        padding: 8px 20px !important;
+        border-radius: 8px;
+        transition: all 0.3s;
+    }
+    
+    .menu-login-btn:hover {
+        background: #f8f9fa;
+        color:  #667eea !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
   <div class="container-fluid">
-    <a class="navbar-brand" href="{% url 'transcription:all' %}">UrduScribe</a>
+    <a class="navbar-brand" href="{% url 'transcription:all' %}">
+        UrduScribe
+    </a>
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-    <ul class="navbar-nav">
-      {% if user.is_authenticated %}
-
-      <li class="nav-item dropdown">
-         <a class="nav-link dropdown-toggle" href="#" id="rightnavDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <img style="width: 25px;" src="{{ user|gravatar:60 }}"/><b class="caret"></b>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="rightnavDropdown">
-            <li>
-                <form action="{% url 'logout' %}" method="post" class="d-inline">
-                    {% csrf_token %}
-                    <input type="hidden" name="next" value="{% url 'transcription:all' %}">
-                    <button class="dropdown-item btn btn-link" type="submit">Logout</button>
-                </form>
+    <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'transcription:faq' %}">FAQ</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'transcription:blog' %}">Blog</a>
+            </li>
+            
+            {% if user.is_authenticated %}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="rightnavDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img class="user-avatar" src="{{ user|gravatar:60 }}" alt="User"/>
+                    {{ user.get_short_name|default:user.username }}
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="rightnavDropdown">
+                    <li>
+                        <form action="{% url 'logout' %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{% url 'transcription:all' %}">
+                            <button class="dropdown-item" type="submit">
+                                🚪 Logout
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link menu-login-btn" href="{% url 'login' %}?next={% url 'transcription:all' %}">
+                    Login
+                </a>
+            </li>
+            {% endif %}
         </ul>
-       </li>
-       {% else %}
-       <li class="nav-item"><a class="nav-link" href="{% url 'login' %}?next={% url 'transcription:all' %}">Login</a></li>
-       {% endif %}
-    </ul>
+    </div>
   </div>
 </nav>
 {% endblock %}

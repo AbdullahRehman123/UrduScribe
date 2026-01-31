@@ -78,3 +78,9 @@ class TaskStatusView(LoginRequiredMixin, View):
             response = {'state': task.state}
         
         return JsonResponse(response)
+    
+class FAQView(TemplateView):
+    template_name = 'transcription/faq.html'
+
+class BlogView(TemplateView):
+    template_name = 'transcription/blog.html'
