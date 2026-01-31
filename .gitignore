@@ -41,3 +41,5 @@ urdu_audios/*
 # Ignore all contents in logs but keep the folder
 logs/*
 !logs/.gitkeep
+
+.github/

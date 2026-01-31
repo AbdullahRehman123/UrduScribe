@@ -1,70 +1,325 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Processing...</title>
+    <title>Processing - UrduScribe</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Add Urdu Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
-
-        .urdu-text {
-            font-family: 'Noto Nastaliq Urdu', serif;
-            direction: rtl;
-            text-align: right;
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
-
+        
+        .processing-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .processing-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 900px;
+            width: 100%;
+            padding: 50px 40px;
+        }
+        
+        .logo-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        /* Modern Spinner */
+        .spinner-container {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin: 30px auto;
+        }
+        
         .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
+            width: 80px;
+            height: 80px;
+            border: 6px solid #f3f4f6;
+            border-top: 6px solid #667eea;
+            border-right: 6px solid #764ba2;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
             animation: spin 1s linear infinite;
-            margin: 20px auto;
         }
+        
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        
+        .status-text {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #495057;
+            margin-top: 20px;
+            font-weight: 500;
+        }
+        
+        .progress-dots {
+            text-align: center;
+            margin-top: 10px;
+            color: #667eea;
+            font-size: 1.5rem;
+        }
+        
+        /* Result Section */
+        #result {
+            margin-top: 40px;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .result-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+            margin: 0;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-action {
+            padding: 8px 20px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-copy {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-copy:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+        
+        .btn-download {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-download:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+        
+        .btn-new {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-new:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+        
+        #transcription-text {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 25px;
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #212529;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .urdu-text {
+            font-family: 'Noto Nastaliq Urdu', serif;
+            direction: rtl;
+            text-align: right;
+            font-size: 1.1rem;
+        }
+        
+        .success-icon {
+            color: #28a745;
+            font-size: 3rem;
+            animation: scaleIn 0.5s ease-out;
+        }
+        
+        @keyframes scaleIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        .error-icon {
+            color: #dc3545;
+            font-size: 3rem;
+        }
+        
+        .copy-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: none;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(400px); }
+            to { transform: translateX(0); }
+        }
     </style>
 </head>
 <body>
-    <div class="container mt-5 text-center">
-        <h2>Processing Your Audio...</h2>
-        <div class="spinner"></div>
-        <p id="status">Transcribing audio, please wait...</p>
-        <div id="result" style="display:none;" class="mt-4">
-            <h3>Transcription Result:</h3>
-            <pre id="transcription-text" class="text-left bg-light p-3 {% if language == 'urdu' %}urdu-text{% endif %}"></pre>
+    {% extends "base_menu.html" %}
+    {% block content %}
+    <div class="copy-notification" id="copyNotification">
+        ✓ Copied to clipboard!
+    </div>
+    
+    <div class="processing-container">
+        <div class="processing-card">
+            <h1 class="logo-title">UrduScribe</h1>
+            
+            <div id="processing-section">
+                <div class="spinner-container">
+                    <div class="spinner"></div>
+                </div>
+                <div class="status-text" id="status">
+                    Transcribing your audio...
+                </div>
+                <div class="progress-dots" id="progressDots"></div>
+            </div>
+            
+            <div id="result" style="display:none;">
+                <div class="result-header">
+                    <h3 class="result-title">Transcription Complete</h3>
+                    <div class="action-buttons">
+                        <button class="btn-action btn-copy" onclick="copyToClipboard()">
+                            📋 Copy
+                        </button>
+                        <button class="btn-action btn-download" onclick="downloadTranscription()">
+                            💾 Download
+                        </button>
+                        <button class="btn-action btn-new" onclick="window.location.href='/'">
+                            ➕ New
+                        </button>
+                    </div>
+                </div>
+                <pre id="transcription-text"></pre>
+            </div>
         </div>
     </div>
 
     <script>
         const taskId = "{{ task_id }}";
+        let dotsCount = 0;
+        
+        // Animated dots while processing
+        const dotsInterval = setInterval(() => {
+            dotsCount = (dotsCount + 1) % 4;
+            document.getElementById('progressDots').textContent = '.'.repeat(dotsCount);
+        }, 500);
         
         function checkStatus() {
             fetch(`/task-status/${taskId}/`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.state === 'SUCCESS') {
-                        document.getElementById('status').innerHTML = '<span class="text-success">✓ Completed!</span>';
-                        document.getElementById('transcription-text').textContent = data.result;
+                        clearInterval(dotsInterval);
+                        
+                        // Hide processing section
+                        document.getElementById('processing-section').style.display = 'none';
+                        
+                        // Show result
+                        const text = data.result;
+                        const transcriptionEl = document.getElementById('transcription-text');
+                        transcriptionEl.textContent = text;
+                        
+                        // Auto-detect Urdu and apply font
+                        if (/[\u0600-\u06FF]/.test(text)) {
+                            transcriptionEl.classList.add('urdu-text');
+                        }
+                        
                         document.getElementById('result').style.display = 'block';
-                        document.querySelector('.spinner').style.display = 'none';
+                        
                     } else if (data.state === 'FAILURE') {
-                        document.getElementById('status').innerHTML = '<span class="text-danger">✗ Failed: ' + data.status + '</span>';
-                        document.querySelector('.spinner').style.display = 'none';
+                        clearInterval(dotsInterval);
+                        document.querySelector('.spinner-container').innerHTML = '<div class="error-icon">❌</div>';
+                        document.getElementById('status').innerHTML = '<span style="color: #dc3545;">Transcription Failed</span>';
+                        document.getElementById('status').style.fontSize = '1rem';
+                        document.getElementById('status').insertAdjacentHTML('afterend', 
+                            '<p style="color: #6c757d; margin-top: 10px;">Error: ' + data.status + '</p>');
+                        document.getElementById('progressDots').style.display = 'none';
                     } else {
-                        setTimeout(checkStatus, 2000); // Check again in 2 seconds
+                        setTimeout(checkStatus, 2000);
                     }
                 });
+        }
+        
+        function copyToClipboard() {
+            const text = document.getElementById('transcription-text').textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const notification = document.getElementById('copyNotification');
+                notification.style.display = 'block';
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 2000);
+            });
+        }
+        
+        function downloadTranscription() {
+            const text = document.getElementById('transcription-text').textContent;
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'transcription_' + new Date().getTime() + '.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
         }
         
         // Start checking status
         checkStatus();
     </script>
+
+    {% endblock %}
+    
 </body>
 </html>

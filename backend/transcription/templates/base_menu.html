@@ -3,17 +3,11 @@
 {% block navbar %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="{% url 'mkt:all' %}">{{ settings.APP_NAME }}</a>
-    <ul class="navbar-nav">
-      {% url 'mkt:all' as x %}
-      <li {% if request.get_full_path == x %}class="active"{% endif %}>
-          <a class="nav-link" href="{% url 'mkt:all' %}" role="button">Ads</a></li>
-    </ul>
+    <a class="navbar-brand" href="{% url 'transcription:all' %}">UrduScribe</a>
+
     <ul class="navbar-nav">
       {% if user.is_authenticated %}
-      <li>
-         <a class="nav-link" href="{% url 'mkt:ad_create' %}">Create Ad</a>
-      </li>
+
       <li class="nav-item dropdown">
          <a class="nav-link dropdown-toggle" href="#" id="rightnavDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <img style="width: 25px;" src="{{ user|gravatar:60 }}"/><b class="caret"></b>
@@ -22,14 +16,14 @@
             <li>
                 <form action="{% url 'logout' %}" method="post" class="d-inline">
                     {% csrf_token %}
-                    <input type="hidden" name="next" value="{% url 'mkt:all' %}">
+                    <input type="hidden" name="next" value="{% url 'transcription:all' %}">
                     <button class="dropdown-item btn btn-link" type="submit">Logout</button>
                 </form>
             </li>
         </ul>
        </li>
        {% else %}
-       <li class="nav-item"><a class="nav-link" href="{% url 'login' %}?next={% url 'mkt:all' %}">Login</a></li>
+       <li class="nav-item"><a class="nav-link" href="{% url 'login' %}?next={% url 'transcription:all' %}">Login</a></li>
        {% endif %}
     </ul>
   </div>

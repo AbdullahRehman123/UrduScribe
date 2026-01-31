@@ -7,18 +7,19 @@ logger = get_rotating_logger("Diarization")
 
 # Load pipeline once at startup
 config_uri = Path(DIARIZATION_MODEL_CONFIG_PATH).resolve()
+
 pipeline = load_pipeline_from_pretrained(config_uri)
 
 logger.info(f"Got pyannote pipeline in diarization.py")
 
-def diarize_audio(audio_file_path: str):
+def diarize_audio(audio_file_path: str, num_speakers):
     """
     Run speaker diarization on the given audio file.
     Returns a list of segments with speaker labels.
     """
     logger.info(f"Diarizing file: {audio_file_path}")
 
-    diarization_result = pipeline(audio_file_path,num_speakers=1)  # you can set num_speakers if known
+    diarization_result = pipeline(audio_file_path, num_speakers = 2)  # you can set num_speakers if known
 
     logger.info(f"Got diarization result after calling pipeline")
 

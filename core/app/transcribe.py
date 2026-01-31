@@ -4,7 +4,7 @@ import time
 from app.config import ENGLISH_INPUT_FOLDER, URDU_INPUT_FOLDER, OUTPUT_FOLDER, get_rotating_logger
 from app.audio_loader import load_audio_files, load_and_preprocess_audio
 from app.diarization import diarize_audio
-from app.transcription_urdu import transcribe_chunks
+
 
 # Initialize logger
 logger = get_rotating_logger("main")
@@ -26,7 +26,7 @@ def save_transcription(text: str, original_filename: str):
 
     return output_path
 
-def transcribe(upload_path, language):
+def transcribe(upload_path, language, num_speakers):
 
     # Convert string to Path object
     upload_path = Path(upload_path)
@@ -65,7 +65,7 @@ def transcribe(upload_path, language):
         audio_np, sr = load_and_preprocess_audio(audio_file)
 
             # Perform diarization
-        speaker_segments = diarize_audio(str(audio_file))
+        speaker_segments = diarize_audio(str(audio_file), num_speakers=num_speakers)
         logger.info(f"Diarization completed: {len(speaker_segments)} speaker segments found.")
 
         lines = []
@@ -87,6 +87,12 @@ def transcribe(upload_path, language):
             try:
                 # Transcribe audio segment
                 logger.info(f"Transcribing segment {idx+1}...")
+
+                if language == 'urdu' or language == 'Urdu':
+                    from app.transcription_urdu import transcribe_chunks
+                else:
+                    from app.transcription_english import transcribe_chunks
+
                 text = transcribe_chunks([seg_audio], sampling_rate=sr)
                 logger.info(f"Segment {idx+1} transcribed: {text[:50]}...")
             

@@ -36,6 +36,8 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+APP_NAME = "UrduScribe"   # Change
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

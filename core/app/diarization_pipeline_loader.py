@@ -8,7 +8,7 @@ logger = get_rotating_logger("Diarization Pipeline Loader")
 def load_pipeline_from_pretrained(path_to_config: str | Path) -> Pipeline:
     path_to_config = Path(path_to_config)
 
-    logger.info(f"Loading pyannote pipeline from {path_to_config}...")
+    print(f"Loading pyannote pipeline from {path_to_config}...")
     # the paths in the config are relative to the current working directory
     # so we need to change the working directory to the model path
     # and then change it back
@@ -27,6 +27,6 @@ def load_pipeline_from_pretrained(path_to_config: str | Path) -> Pipeline:
     #print(f"Changing working directory back to {cwd}")
     os.chdir(cwd)
 
-    logger.info(f"Loaded pyannote pipeline and returning")
+    print(f"Loaded pyannote pipeline and returning")
     
     return pipeline
